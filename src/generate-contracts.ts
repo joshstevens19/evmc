@@ -37,10 +37,7 @@ const _generateDirectoryFoundations = async (
   );
 };
 
-export const generateContracts = async (
-  network: NetworkTypes,
-  address: string
-) => {
+const _getSourceCode = async (network: NetworkTypes, address: string) => {
   const response = await fetch(
     `${networkToOrigin(
       network
@@ -48,22 +45,35 @@ export const generateContracts = async (
   );
 
   const data = await response.json();
-  await fs.writeFile('./output-results.json', JSON.stringify(data), 'utf8');
-
   // always be [0] as we only ever pass in 1 address
   const contractInfo: EtherscanCodeResult = data.result[0];
+
+  return contractInfo;
+};
+
+const _generateSingleContract = async (contractInfo: EtherscanCodeResult) => {
+  await _generateDirectoryFoundations(contractInfo);
+
+  await fs.writeFile(
+    path.join(contractInfo.ContractName, 'contract.sol'),
+    contractInfo.SourceCode,
+    'utf8'
+  );
+};
+
+export const generateContracts = async (
+  network: NetworkTypes,
+  address: string
+) => {
+  const contractInfo: EtherscanCodeResult = await _getSourceCode(
+    network,
+    address
+  );
 
   const isSingleContract = _isSingleContract(contractInfo);
 
   if (isSingleContract) {
-    await _generateDirectoryFoundations(contractInfo);
-
-    await fs.writeFile(
-      path.join(contractInfo.ContractName, 'contract.sol'),
-      contractInfo.SourceCode,
-      'utf8'
-    );
-    return;
+    return await _generateSingleContract(contractInfo);
   }
 
   const sourceCode: {
