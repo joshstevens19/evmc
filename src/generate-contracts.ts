@@ -1,6 +1,6 @@
-import { promises as fs } from 'fs';
 import fetch from 'node-fetch';
 import path from 'path';
+import { ContractWriter } from './contract-writer';
 import { DevelopmentKitTypes } from './development-kits/development-kit-types';
 import { generateHardhatProject } from './development-kits/hardhat';
 import { EtherscanCodeResult } from './etherscan-code-result';
@@ -9,19 +9,6 @@ import { NetworkTypes } from './networks/network-types';
 
 const _isSingleContract = (contractInfo: EtherscanCodeResult) => {
   return contractInfo.SourceCode.substring(0, 1) !== '{';
-};
-
-const _generateDirectoryFoundations = async (
-  contractInfo: EtherscanCodeResult
-) => {
-  await fs.rm(contractInfo.ContractName, { recursive: true, force: true });
-  await fs.mkdir(contractInfo.ContractName);
-
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, 'ABI.json'),
-    contractInfo.ABI,
-    'utf8'
-  );
 };
 
 const _getSourceCode = async (network: NetworkTypes, address: string) => {
@@ -39,16 +26,44 @@ const _getSourceCode = async (network: NetworkTypes, address: string) => {
   return contractInfo;
 };
 
-const _generateSingleContract = async (contractInfo: EtherscanCodeResult) => {
-  await _generateDirectoryFoundations(contractInfo);
+const _generateSingleContract = async (
+  contractInfo: EtherscanCodeResult,
+  contractWriter: ContractWriter
+) => {
+  await contractWriter.mkdir('contracts');
 
-  await fs.mkdir(path.join(contractInfo.ContractName, 'contracts'));
-
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, 'contracts', 'contract.sol'),
-    contractInfo.SourceCode,
-    'utf8'
+  await contractWriter.writeFile(
+    path.join('contracts', 'contract.sol'),
+    contractInfo.SourceCode
   );
+};
+
+const _generateMultifileContract = async (
+  contractInfo: EtherscanCodeResult,
+  contractWriter: ContractWriter
+) => {
+  const sourceCode: {
+    language: string;
+    sources: Record<string, { content: string }>;
+  } = JSON.parse(
+    contractInfo.SourceCode.substring(1, contractInfo.SourceCode.length - 1)
+  );
+
+  // await fs.writeFile('debug.json', JSON.stringify(sourceCode), 'utf8');
+
+  if (sourceCode.language !== 'Solidity') {
+    throw new Error('Not a Solidity contract');
+  }
+
+  // loop through object
+  for (const [key, value] of Object.entries(sourceCode.sources)) {
+    const dictionarySegments = key.split('/');
+    // remove .sol name
+    dictionarySegments.pop();
+
+    await contractWriter.mkdir(dictionarySegments);
+    await contractWriter.writeFile(key, value.content);
+  }
 };
 
 export interface GenerateContractsOptions {
@@ -63,47 +78,22 @@ export const generateContracts = async (options: GenerateContractsOptions) => {
     options.address
   );
 
+  const contractWriter = new ContractWriter(contractInfo.ContractName);
+
   const isSingleContract = _isSingleContract(contractInfo);
 
   if (isSingleContract) {
-    return await _generateSingleContract(contractInfo);
+    await _generateSingleContract(contractInfo, contractWriter);
+  } else {
+    await _generateMultifileContract(contractInfo, contractWriter);
   }
 
-  const sourceCode: {
-    language: string;
-    sources: Record<string, { content: string }>;
-  } = JSON.parse(
-    contractInfo.SourceCode.substring(1, contractInfo.SourceCode.length - 1)
-  );
-
-  await fs.writeFile('debug.json', JSON.stringify(sourceCode), 'utf8');
-
-  if (sourceCode.language !== 'Solidity') {
-    throw new Error('Not a Solidity contract');
-  }
-
-  await _generateDirectoryFoundations(contractInfo);
-
-  // loop through object
-  for (const [key, value] of Object.entries(sourceCode.sources)) {
-    const dictionarySegments = key.split('/');
-    // remove .sol name
-    dictionarySegments.pop();
-
-    await fs.mkdir(
-      path.join(contractInfo.ContractName, dictionarySegments.join('/')),
-      {
-        recursive: true,
-      }
-    );
-
-    await fs.writeFile(
-      path.join(contractInfo.ContractName, key),
-      value.content
-    );
+  if (!options.developmentKit) {
+    await contractWriter.writeFile('ABI.json', contractInfo.ABI);
+    return;
   }
 
   if (options.developmentKit === DevelopmentKitTypes.HARDHAT) {
-    await generateHardhatProject(options.address, contractInfo);
+    await generateHardhatProject(options.address, contractInfo, contractWriter);
   }
 };

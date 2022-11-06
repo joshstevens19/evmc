@@ -39,7 +39,6 @@ export = {
         developmentKit,
       });
     } catch (error: any) {
-      Logger.error('Could not fetch contracts. Please try again.');
       Logger.error(error.message);
     }
   },

@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
 import path from 'path';
+import { ContractWriter } from '../../contract-writer';
 import { EtherscanCodeResult } from '../../etherscan-code-result';
 
 const buildHardhatConfig = (compilerVersion: string) => {
@@ -100,50 +100,67 @@ const tsconfig = `
 }
 `;
 
-export const generateHardhatProject = async (
-  address: string,
-  contractInfo: EtherscanCodeResult
+const _writeHardhatScripts = async (
+  contractInfo: EtherscanCodeResult,
+  contractWriter: ContractWriter
 ) => {
-  await fs.mkdir(path.join(contractInfo.ContractName, 'scripts'), {
-    recursive: true,
-  });
+  await contractWriter.mkdir('scripts');
 
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, 'scripts', 'deploy.ts'),
+  await contractWriter.writeFile(
+    path.join('scripts', 'deploy.ts'),
     buildHardhatDeployScript(
       contractInfo.ContractName,
       contractInfo.ConstructorArguments
-    ),
-    'utf8'
+    )
   );
+};
 
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, 'package.json'),
-    buildHardhatPackageJson(contractInfo.ContractName),
-    'utf8'
+const _writeHardhatPackageJson = async (
+  contractInfo: EtherscanCodeResult,
+  contractWriter: ContractWriter
+) => {
+  await contractWriter.writeFile(
+    'package.json',
+    buildHardhatPackageJson(contractInfo.ContractName)
   );
+};
 
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, 'hardhat.config.ts'),
-    buildHardhatConfig(contractInfo.CompilerVersion),
-    'utf8'
+const _writeHardhatConfig = async (
+  contractInfo: EtherscanCodeResult,
+  contractWriter: ContractWriter
+) => {
+  await contractWriter.writeFile(
+    'hardhat.config.ts',
+    buildHardhatConfig(contractInfo.CompilerVersion)
   );
+};
 
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, '.gitignore'),
-    gitIgnore,
-    'utf8'
-  );
+const _writeHardhatGitIgnore = async (contractWriter: ContractWriter) => {
+  await contractWriter.writeFile('.gitignore', gitIgnore);
+};
 
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, 'tsconfig.json'),
-    tsconfig,
-    'utf8'
-  );
+const _writeHardhatTsConfig = async (contractWriter: ContractWriter) => {
+  await contractWriter.writeFile('tsconfig.json', tsconfig);
+};
 
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, 'README.md'),
-    readme(address),
-    'utf8'
-  );
+const _writeHardhatReadme = async (
+  address: string,
+  contractWriter: ContractWriter
+) => {
+  await contractWriter.writeFile('README.md', readme(address));
+};
+
+export const generateHardhatProject = async (
+  address: string,
+  contractInfo: EtherscanCodeResult,
+  contractWriter: ContractWriter
+) => {
+  await Promise.all([
+    _writeHardhatScripts(contractInfo, contractWriter),
+    _writeHardhatPackageJson(contractInfo, contractWriter),
+    _writeHardhatConfig(contractInfo, contractWriter),
+    _writeHardhatGitIgnore(contractWriter),
+    _writeHardhatTsConfig(contractWriter),
+    _writeHardhatReadme(address, contractWriter),
+  ]);
 };
