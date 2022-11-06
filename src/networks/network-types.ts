@@ -1,0 +1,23 @@
+// https://etherscan.io/eaas
+export enum NetworkTypes {
+  eth_main = 'eth_main',
+  eth_goerli = 'eth_goerli',
+  eth_kovan = 'eth_kovan',
+  eth_rinkeby = 'eth_rinkeby',
+  eth_ropston = 'eth_ropston',
+  eth_sepolia = 'eth_sepolia',
+  avalance = 'avalance',
+  avalance_testnet = 'avalance_testnet',
+  polygon = 'polygon',
+  mumbai = 'mumbai',
+  optimism = 'optimism',
+  optimism_goerli = 'optimism_goerli',
+  fantom = 'fantom',
+  fantom_testnet = 'fantom_testnet',
+  arbitrum = 'arbitrum',
+  arbitrum_goerli = 'arbitrum_goerli',
+  bsc = 'bsc',
+  bsc_testnet = 'bsc_testnet',
+  cronos = 'cronos',
+  cronos_testnet = 'cronos_testnet',
+}
