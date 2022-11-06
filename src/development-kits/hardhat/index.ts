@@ -8,26 +8,54 @@ const buildHardhatConfig = (compilerVersion: string) => {
     compilerVersion.indexOf('+')
   );
   return `
-        import { HardhatUserConfig } from "hardhat/config";
-        import "@nomicfoundation/hardhat-toolbox";
+import { HardhatUserConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
 
-        const config: HardhatUserConfig = {
-        solidity: "${extractedVersion}",
-        };
+const config: HardhatUserConfig = {
+solidity: "${extractedVersion}",
+};
 
-        export default config;
+export default config;
     `;
+};
+
+const buildHardhatDeployScript = (
+  contractName: string,
+  constructorArguments: string
+) => {
+  return `
+import { ethers } from 'hardhat';
+
+async function main() {
+  console.log('ethers version', ethers.version);
+
+  // pre-filled with the constructor arguments and contracts
+  const ${contractName} = await ethers.getContractFactory('${contractName}');
+  const instance = await ${contractName}.deploy('${constructorArguments}');
+  await instance.deployed();
+}
+
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+`;
 };
 
 const buildHardhatPackageJson = (contractName: string) => {
   return `
-    {
-        "name": "${contractName.toLowerCase()}-hardhat-project",
-        "devDependencies": {
-            "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-            "hardhat": "^2.12.2"
-        }
+{
+    "name": "${contractName.toLowerCase()}-hardhat-project",
+    "scripts": {
+        "compile": "hardhat compile"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+        "hardhat": "^2.12.2"
     }
+}
 `;
 };
 
@@ -44,10 +72,19 @@ cache
 artifacts
 `;
 
-const readme = `
+const readme = (contractAddress: string) => `
 # Sample Hardhat Project
 
-This project demonstrates a basic Hardhat use case. It has injected all the contracts into the contract file and built you a template so you can start using it.
+This project has created a basic Hardhat template using the contracts from address ${contractAddress}.
+
+It has injected all the contracts into the contract file and built you a template so you can start using it.
+
+## Getting Started
+
+1. Install dependencies (npm install)
+2. Compile the contracts (npm run compile)
+3. Start writing your tests (npm run test)
+4. Start writing your scripts (npm run deploy)
 `;
 
 const tsconfig = `
@@ -64,8 +101,22 @@ const tsconfig = `
 `;
 
 export const generateHardhatProject = async (
+  address: string,
   contractInfo: EtherscanCodeResult
 ) => {
+  await fs.mkdir(path.join(contractInfo.ContractName, 'scripts'), {
+    recursive: true,
+  });
+
+  await fs.writeFile(
+    path.join(contractInfo.ContractName, 'scripts', 'deploy.ts'),
+    buildHardhatDeployScript(
+      contractInfo.ContractName,
+      contractInfo.ConstructorArguments
+    ),
+    'utf8'
+  );
+
   await fs.writeFile(
     path.join(contractInfo.ContractName, 'package.json'),
     buildHardhatPackageJson(contractInfo.ContractName),
@@ -92,7 +143,7 @@ export const generateHardhatProject = async (
 
   await fs.writeFile(
     path.join(contractInfo.ContractName, 'README.md'),
-    readme,
+    readme(address),
     'utf8'
   );
 };

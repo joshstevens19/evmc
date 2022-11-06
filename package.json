@@ -8,7 +8,9 @@
     "start": "npm run build && node ./dist/index.js",
     "gp": "cd ./projects && node ../dist/bin/generator-cli.js 0xc13eac3b4f9eed480045113b7af00f7b5655ece8",
     "gp2": "cd ./projects && node ../dist/bin/generator-cli.js 0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
-    "gp-hardhat": "cd ./projects && node ../dist/bin/generator-cli.js 0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9 --hardhat"
+    "gp-hardhat": "cd ./projects && node ../dist/bin/generator-cli.js 0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9 --hardhat",
+    "gp-hardhat2": "cd ./projects && node ../dist/bin/generator-cli.js 0x4fe11bc316b6d7a345493127fbe298b95adaad85 --hardhat --hardhat-compile",
+    "gp-hardhat3": "cd ./projects && node ../dist/bin/generator-cli.js 0xe592427a0aece92de3edee1f18e0157c05861564 --hardhat"
   },
   "bin": {
     "contract-fetch": "./dist/bin/generator-cli.js"

@@ -32,6 +32,7 @@ const _getSourceCode = async (network: NetworkTypes, address: string) => {
   );
 
   const data = await response.json();
+
   // always be [0] as we only ever pass in 1 address
   const contractInfo: EtherscanCodeResult = data.result[0];
 
@@ -75,6 +76,8 @@ export const generateContracts = async (options: GenerateContractsOptions) => {
     contractInfo.SourceCode.substring(1, contractInfo.SourceCode.length - 1)
   );
 
+  await fs.writeFile('debug.json', JSON.stringify(sourceCode), 'utf8');
+
   if (sourceCode.language !== 'Solidity') {
     throw new Error('Not a Solidity contract');
   }
@@ -83,28 +86,16 @@ export const generateContracts = async (options: GenerateContractsOptions) => {
 
   // loop through object
   for (const [key, value] of Object.entries(sourceCode.sources)) {
-    const dictionarys = key.split('/');
-    for (let i = 0; i < dictionarys.length; i++) {
-      const dictionary = dictionarys[i];
-      if (!dictionary.includes('.')) {
-        if (i > 0) {
-          await fs.mkdir(
-            path.join(
-              contractInfo.ContractName,
-              dictionarys[i - 1],
-              dictionary
-            ),
-            {
-              recursive: true,
-            }
-          );
-        } else {
-          await fs.mkdir(path.join(contractInfo.ContractName, dictionary), {
-            recursive: true,
-          });
-        }
+    const dictionarySegments = key.split('/');
+    // remove .sol name
+    dictionarySegments.pop();
+
+    await fs.mkdir(
+      path.join(contractInfo.ContractName, dictionarySegments.join('/')),
+      {
+        recursive: true,
       }
-    }
+    );
 
     await fs.writeFile(
       path.join(contractInfo.ContractName, key),
@@ -113,6 +104,6 @@ export const generateContracts = async (options: GenerateContractsOptions) => {
   }
 
   if (options.developmentKit === DevelopmentKitTypes.HARDHAT) {
-    await generateHardhatProject(contractInfo);
+    await generateHardhatProject(options.address, contractInfo);
   }
 };
