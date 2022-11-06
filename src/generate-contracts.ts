@@ -1,24 +1,11 @@
 import { promises as fs } from 'fs';
 import fetch from 'node-fetch';
 import path from 'path';
+import { DevelopmentKitTypes } from './development-kits/development-kit-types';
+import { generateHardhatProject } from './development-kits/hardhat';
+import { EtherscanCodeResult } from './etherscan-code-result';
 import { networkToOrigin } from './networks/network-to-origin';
 import { NetworkTypes } from './networks/network-types';
-
-interface EtherscanCodeResult {
-  SourceCode: string;
-  ABI: string;
-  ContractName: string;
-  CompilerVersion: string;
-  OptimizationUsed: string;
-  Runs: string;
-  ConstructorArguments: string;
-  EVMVersion: string;
-  Library: string;
-  LicenseType: string;
-  Proxy: string;
-  Implementation: string;
-  SwarmSource: string;
-}
 
 const _isSingleContract = (contractInfo: EtherscanCodeResult) => {
   return contractInfo.SourceCode.substring(0, 1) !== '{';
@@ -54,20 +41,25 @@ const _getSourceCode = async (network: NetworkTypes, address: string) => {
 const _generateSingleContract = async (contractInfo: EtherscanCodeResult) => {
   await _generateDirectoryFoundations(contractInfo);
 
+  await fs.mkdir(path.join(contractInfo.ContractName, 'contracts'));
+
   await fs.writeFile(
-    path.join(contractInfo.ContractName, 'contract.sol'),
+    path.join(contractInfo.ContractName, 'contracts', 'contract.sol'),
     contractInfo.SourceCode,
     'utf8'
   );
 };
 
-export const generateContracts = async (
-  network: NetworkTypes,
-  address: string
-) => {
+export interface GenerateContractsOptions {
+  network: NetworkTypes;
+  address: string;
+  developmentKit?: DevelopmentKitTypes;
+}
+
+export const generateContracts = async (options: GenerateContractsOptions) => {
   const contractInfo: EtherscanCodeResult = await _getSourceCode(
-    network,
-    address
+    options.network,
+    options.address
   );
 
   const isSingleContract = _isSingleContract(contractInfo);
@@ -87,14 +79,7 @@ export const generateContracts = async (
     throw new Error('Not a Solidity contract');
   }
 
-  await fs.rm(contractInfo.ContractName, { recursive: true, force: true });
-  await fs.mkdir(contractInfo.ContractName);
-
-  await fs.writeFile(
-    path.join(contractInfo.ContractName, 'ABI.json'),
-    contractInfo.ABI,
-    'utf8'
-  );
+  await _generateDirectoryFoundations(contractInfo);
 
   // loop through object
   for (const [key, value] of Object.entries(sourceCode.sources)) {
@@ -125,5 +110,9 @@ export const generateContracts = async (
       path.join(contractInfo.ContractName, key),
       value.content
     );
+  }
+
+  if (options.developmentKit === DevelopmentKitTypes.HARDHAT) {
+    await generateHardhatProject(contractInfo);
   }
 };

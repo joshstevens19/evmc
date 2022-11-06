@@ -25,6 +25,8 @@
     "dist",
     "src/jest",
     "**/*.spec.ts",
-    "**/*.mock.ts"
+    "**/*.mock.ts",
+    "development-kit-templates",
+    "projects"
   ]
 }
