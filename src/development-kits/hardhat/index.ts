@@ -106,16 +106,16 @@ main().catch((error) => {
 const buildHardhatPackageJson = (contractName: string) => {
   return `
 {
-    "name": "${contractName.toLowerCase()}-hardhat-project",
-    "scripts": {
-        "compile": "hardhat compile",
-        "node": "hardhat node",
-        "deploy": "hardhat run --network localhost scripts/deploy.ts"
-    },
-    "devDependencies": {
-        "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-        "hardhat": "^2.12.2"
-    }
+  "name": "${contractName.toLowerCase()}-hardhat-project",
+  "scripts": {
+      "compile": "hardhat compile",
+      "node": "hardhat node",
+      "deploy": "hardhat run --network localhost scripts/deploy.ts"
+  },
+  "devDependencies": {
+      "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+      "hardhat": "^2.12.2"
+  }
 }
 `;
 };
@@ -173,7 +173,8 @@ const _writeHardhatScripts = async (
       contractInfo.ContractName,
       contractInfo.ABI,
       contractInfo.ConstructorArguments
-    )
+    ),
+    true
   );
 };
 
@@ -193,7 +194,8 @@ const _writeHardhatConfig = async (
 ) => {
   await contractWriter.writeFile(
     'hardhat.config.ts',
-    buildHardhatConfig(contractInfo.CompilerVersion)
+    buildHardhatConfig(contractInfo.CompilerVersion),
+    true
   );
 };
 
