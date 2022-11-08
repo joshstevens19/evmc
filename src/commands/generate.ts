@@ -38,8 +38,8 @@ export = {
         address,
         developmentKit,
       });
-    } catch (error: any) {
-      Logger.error(error.message);
+    } catch (error) {
+      Logger.error((<Error>error).message);
     }
   },
 };

@@ -1,3 +1,9 @@
+import {
+  defaultAbiCoder,
+  parseBytes32String,
+  toUtf8Bytes,
+  toUtf8String,
+} from 'ethers/lib/utils';
 import path from 'path';
 import { ContractWriter } from '../../contract-writer';
 import { EtherscanCodeResult } from '../../etherscan-code-result';
@@ -21,8 +27,61 @@ export default config;
 
 const buildHardhatDeployScript = (
   contractName: string,
+  abi: string,
   constructorArguments: string
 ) => {
+  const constructorInput = JSON.parse(abi).find(
+    (c: any) => c.type === 'constructor'
+  ) as {
+    inputs: { name: string; type: string }[];
+  };
+
+  console.log('constructorInput', constructorInput.inputs.length);
+
+  console.log('constructParams', constructorArguments);
+
+  const constructParams: string[] = constructorArguments.match(
+    /.{1,64}/g
+  ) as string[];
+
+  console.log('constructParams', constructParams.length);
+
+  const decodedParams = [];
+  for (let i = constructorInput.inputs.length - 1; i >= 0; i--) {
+    if (constructorInput.inputs[i]) {
+      let result = '';
+
+      console.log(constructorInput.inputs[i].type);
+
+      if (constructorInput.inputs[i].type === 'string') {
+        console.log(
+          'THIS IS OUTCOME!!!',
+          toUtf8String(toUtf8Bytes('0x' + constructParams[i]))
+        );
+
+        result = '0x' + constructParams[i];
+        console.log('result', result);
+      } else if (constructorInput.inputs[i].type === 'bytes') {
+        result = parseBytes32String(constructParams[i]);
+        console.log('result', result);
+      } else {
+        result = defaultAbiCoder.decode(
+          [constructorInput.inputs[i].type],
+          '0x' + constructParams[i]
+        )[0];
+      }
+
+      decodedParams.push(`'${result}'`);
+    }
+  }
+
+  let deployMethod = `${contractName}.deploy()`;
+  if (decodedParams.length > 0) {
+    deployMethod = `${contractName}.deploy(${decodedParams
+      .reverse()
+      .join(', ')})`;
+  }
+
   return `
 import { ethers } from 'hardhat';
 
@@ -31,7 +90,7 @@ async function main() {
 
   // pre-filled with the constructor arguments and contracts
   const ${contractName} = await ethers.getContractFactory('${contractName}');
-  const instance = await ${contractName}.deploy('${constructorArguments}');
+  const instance = await ${deployMethod};
   await instance.deployed();
 }
 
@@ -49,7 +108,9 @@ const buildHardhatPackageJson = (contractName: string) => {
 {
     "name": "${contractName.toLowerCase()}-hardhat-project",
     "scripts": {
-        "compile": "hardhat compile"
+        "compile": "hardhat compile",
+        "node": "hardhat node",
+        "deploy": "hardhat run --network localhost scripts/deploy.ts"
     },
     "devDependencies": {
         "@nomicfoundation/hardhat-toolbox": "^2.0.0",
@@ -83,8 +144,8 @@ It has injected all the contracts into the contract file and built you a templat
 
 1. Install dependencies (npm install)
 2. Compile the contracts (npm run compile)
-3. Start writing your tests (npm run test)
-4. Start writing your scripts (npm run deploy)
+3. Run locally (npm run node) and deploy the contract (npm run deploy)
+4. Start coding, this is a basic template to get you started.
 `;
 
 const tsconfig = `
@@ -110,6 +171,7 @@ const _writeHardhatScripts = async (
     path.join('scripts', 'deploy.ts'),
     buildHardhatDeployScript(
       contractInfo.ContractName,
+      contractInfo.ABI,
       contractInfo.ConstructorArguments
     )
   );
