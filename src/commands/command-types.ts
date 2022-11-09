@@ -1,3 +1,3 @@
 export enum CommandTypes {
-  generate = 'generate',
+  get = 'get',
 }

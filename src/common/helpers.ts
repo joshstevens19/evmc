@@ -30,7 +30,7 @@ export default class Helpers {
    */
   public static getHelpMessageByCommandType(commandType: CommandTypes): string {
     switch (commandType) {
-      case CommandTypes.generate:
+      case CommandTypes.get:
         return this.buildUpHelpMessage(generateHelpMessages);
       default:
         throw new Error('No help message for this command');

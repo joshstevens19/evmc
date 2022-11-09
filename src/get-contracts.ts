@@ -26,7 +26,7 @@ const _getSourceCode = async (network: NetworkTypes, address: string) => {
   return contractInfo;
 };
 
-const _generateSingleContract = async (
+const _getSingleContract = async (
   contractInfo: EtherscanCodeResult,
   contractWriter: ContractWriter
 ) => {
@@ -38,7 +38,7 @@ const _generateSingleContract = async (
   );
 };
 
-const _generateMultifileContract = async (
+const _getMultifileContract = async (
   contractInfo: EtherscanCodeResult,
   contractWriter: ContractWriter
 ) => {
@@ -83,9 +83,9 @@ export const generateContracts = async (options: GenerateContractsOptions) => {
   const isSingleContract = _isSingleContract(contractInfo);
 
   if (isSingleContract) {
-    await _generateSingleContract(contractInfo, contractWriter);
+    await _getSingleContract(contractInfo, contractWriter);
   } else {
-    await _generateMultifileContract(contractInfo, contractWriter);
+    await _getMultifileContract(contractInfo, contractWriter);
   }
 
   if (!options.developmentKit) {

@@ -3,11 +3,11 @@ import Helpers from '../common/helpers';
 import { Logger } from '../common/logger';
 import { ProgramOptions } from '../common/program-options';
 import { DevelopmentKitTypes } from '../development-kits/development-kit-types';
-import { generateContracts } from '../generate-contracts';
+import { generateContracts } from '../get-contracts';
 import { NetworkTypes } from '../networks/network-types';
 import { CommandTypes } from './command-types';
 
-const help = Helpers.getHelpMessageByCommandType(CommandTypes.generate);
+const help = Helpers.getHelpMessageByCommandType(CommandTypes.get);
 
 export = {
   async action(cmd: ProgramOptions): Promise<void> {
@@ -20,7 +20,7 @@ export = {
     let address;
 
     try {
-      address = getAddress(cmd.command);
+      address = getAddress(cmd.subcommands[0]);
     } catch (error) {
       return Logger.error('Invalid contract address');
     }

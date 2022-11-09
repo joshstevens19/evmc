@@ -1,5 +1,5 @@
-import generate from './generate';
+import get from './get';
 
 export = {
-  generate,
+  get,
 };

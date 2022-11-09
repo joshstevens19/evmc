@@ -17,10 +17,13 @@ export async function execute(packageVersion: string): Promise<void> {
   if (args.command === 'help' || args.options.help) {
     // only supported command right now but written in away to extend wouldnt be too
     // much restructing
-    return Logger.log(
-      Helpers.getHelpMessageByCommandType(CommandTypes.generate)
-    );
+    return Logger.log(Helpers.getHelpMessageByCommandType(CommandTypes.get));
   }
 
-  await commands.generate.action(args);
+  switch (args.command) {
+    case CommandTypes.get:
+      return await commands.get.action(args);
+    default:
+      return Logger.error("unsupported command, try 'help'");
+  }
 }
