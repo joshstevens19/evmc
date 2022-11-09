@@ -1,29 +1,82 @@
-# evm-contract
+# evm-contract-fetch (evmc)
 
-A simple cli tool to load a contract code up in vscode instantly.
+When browsing any evm blockchain, it is often useful to be able to see the source code of a contract. This is especially true when trying to understand the behavior of a contract, or when trying to verify the behavior of a contract. This tool allows you to fetch the source code of a contract from the blockchain, and create you the full project files for you to view in your editor, support to deploy on a local node, compile if you choose to. This uses etherscan API to grab the verified sources of the contract.
 
-## Usage
+## Features 🚀
+
+🚀 Fetch the source code of a contract from the blockchain and use it in your favourite editor
+<br/>
+🚀 Support for hardhat project instantly creating you a hardhat project template with the compile, deploy scripts and local node running all ready to go.
+<br/>
+
+## Chains Supported 🌐
+
+🌐 Ethereum Mainnet - eth_main
+<br/>
+🌐 Ethereum Ropsten - eth_ropsten
+<br/>
+🌐 Ethereum Rinkeby - eth_rinkeby
+<br/>
+🌐 Ethereum Goerli - eth_goerli
+<br/>
+🌐 Ethereum Kovan - eth_kovan
+<br/>
+🌐 Binance Smart Chain Mainnet - bsc
+<br/>
+🌐 Binance Smart Chain Testnet - bsc_testnet
+<br/>
+🌐 Polygon Mainnet - polygon
+<br/>
+🌐 Polygon Mumbai - mumbai
+<br/>
+🌐 Avalanche C-Chain - avalanche
+<br/>
+🌐 Avalanche Fuji - avalance_testnet
+<br/>
+🌐 Fantom - fantom
+<br/>
+🌐 Fantom Testnet - fantom_testnet
+<br/>
+🌐 Optimism - optimism
+<br/>
+🌐 Optimism Goerli - optimism_goerli
+<br/>
+🌐 Arbitrum - arbitrum
+<br/>
+🌐 Arbitrum Goerli - arbitrum_goerli
+<br/>
+🌐 Cronos - cronos
+<br/>
+🌐 Cronos Testnet - cronos_testnet
+
+## Installation
+
+### npm:
+
+```bash
+$ npm install evm-contract-fetch -g
+```
+
+### yarn:
+
+```bash
+$ yarn global add evm-contract-fetch
+```
+
+## CLI usage
+
+Once installed it will expose a command called evmc
 
 ### Get
 
 ```bash
-$ evm-contract get <contract> --hardhat
+$ evmc get <contract> --hardhat
 ```
 
 ```bash
-$ evm-contract get <contract> --foundry
+$ evmc get <contract> --foundry
 ```
 
 ```bash
-$ evm-contract get <contract> --network=ethereum --output=PATH_DIRECTORY
-```
-
-### list
-
-```bash
-$ evm-contract ls <contract> [<path>]
-```
-
-```bash
-$ evm-contract ls <contract>
+$ evmc get <contract> --network=eth_main --output=PATH_DIRECTORY
 ```

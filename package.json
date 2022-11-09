@@ -1,5 +1,5 @@
 {
-  "name": "evm-contract-code-vscode",
+  "name": "evm-contract-fetch",
   "version": "1.0.0",
   "description": "a simple cli tool to load a contract code up in vscode instantly.",
   "main": "dist/index.js",
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joshstevens19/evm-contract-code-vscode.git"
+    "url": "git+https://github.com/joshstevens19/evm-contract-fetch.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/joshstevens19/evm-contract-code-vscode/issues"
+    "url": "https://github.com/joshstevens19/evm-contract-fetch/issues"
   },
-  "homepage": "https://github.com/joshstevens19/evm-contract-code-vscode#readme",
+  "homepage": "https://github.com/joshstevens19/evm-contract-fetch#readme",
   "dependencies": {
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
