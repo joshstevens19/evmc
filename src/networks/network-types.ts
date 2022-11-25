@@ -1,6 +1,6 @@
 // https://etherscan.io/eaas
 export enum NetworkTypes {
-  eth_main = 'eth_main',
+  eth = 'eth',
   eth_goerli = 'eth_goerli',
   eth_kovan = 'eth_kovan',
   eth_rinkeby = 'eth_rinkeby',

@@ -4,7 +4,7 @@ export const networkToApiSettings = (
   network: NetworkTypes
 ): { apiKey: string; endpointOrigin: string } => {
   switch (network) {
-    case NetworkTypes.eth_main:
+    case NetworkTypes.eth:
       return {
         apiKey: '75H438D1KX861D9S2J33BNJDBPAM99N2ZJ',
         endpointOrigin: 'https://api.etherscan.io/',
