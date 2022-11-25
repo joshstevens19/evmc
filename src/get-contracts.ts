@@ -4,7 +4,7 @@ import { ContractWriter } from './contract-writer';
 import { DevelopmentKitTypes } from './development-kits/development-kit-types';
 import { generateHardhatProject } from './development-kits/hardhat';
 import { EtherscanCodeResult } from './etherscan-code-result';
-import { networkToOrigin } from './networks/network-to-origin';
+import { networkToApiSettings } from './networks/network-to-api-settings';
 import { NetworkTypes } from './networks/network-types';
 
 const _isSingleContract = (contractInfo: EtherscanCodeResult) => {
@@ -12,10 +12,9 @@ const _isSingleContract = (contractInfo: EtherscanCodeResult) => {
 };
 
 const _getSourceCode = async (network: NetworkTypes, address: string) => {
+  const apiSettings = networkToApiSettings(network);
   const response = await fetch(
-    `${networkToOrigin(
-      network
-    )}/api?module=contract&action=getsourcecode&address=${address}&apikey=75H438D1KX861D9S2J33BNJDBPAM99N2ZJ`
+    `${apiSettings.endpointOrigin}api?module=contract&action=getsourcecode&address=${address}&apikey=${apiSettings.apiKey}`
   );
 
   const data = await response.json();
