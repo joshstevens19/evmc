@@ -1,3 +1,6 @@
+[![npm version](https://badge.fury.io/js/evmcontracts.svg)](https://badge.fury.io/js/evmcontracts)
+![downloads](https://img.shields.io/npm/dw/evmcontracts)
+
 # evm-contract-fetch (evmc)
 
 When browsing any evm blockchain, it is often useful to be able to see the source code of a contract. This is especially true when trying to understand the behavior of a contract, or when trying to verify the behavior of a contract. This tool allows you to fetch the source code of a contract from the blockchain, and create you the full project files for you to view in your editor, support to deploy on a local node, compile if you choose to. This uses etherscan API to grab the verified sources of the contract.
