@@ -12,7 +12,8 @@
     "gp-hardhat2": "cd ./projects && node ../dist/bin/generator-cli.js get 0x4fe11bc316b6d7a345493127fbe298b95adaad85 --hardhat",
     "gp-hardhat3": "cd ./projects && node ../dist/bin/generator-cli.js get 0xe592427a0aece92de3edee1f18e0157c05861564 --hardhat",
     "gp-hardhat4": "cd ./projects && node ../dist/bin/generator-cli.js get eth_main 0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d --hardhat",
-    "gp-hardhat5": "cd ./projects && node ../dist/bin/generator-cli.js get avalance 0x6a2b2e8123a046e643faf2cb78d86eb4e8496d2f --hardhat"
+    "gp-hardhat5": "cd ./projects && node ../dist/bin/generator-cli.js get avalance 0x6a2b2e8123a046e643faf2cb78d86eb4e8496d2f --hardhat",
+    "networks": "cd ./projects && node ../dist/bin/generator-cli.js networks"
   },
   "bin": {
     "contract-fetch": "./dist/bin/generator-cli.js"

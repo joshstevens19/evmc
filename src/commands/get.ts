@@ -19,10 +19,13 @@ export = {
 
     let network = cmd.subcommands[0] as NetworkTypes;
     if (!(<any>Object).values(NetworkTypes).includes(network)) {
-      return Logger.error(
-        'Invalid network please use one of the following: ' +
-          (<any>Object).values(NetworkTypes).join(', ')
-      );
+      Logger.error('Invalid network please use one of the following:');
+
+      for (const network of (<any>Object).values(NetworkTypes)) {
+        Logger.error(network);
+      }
+
+      return;
     }
 
     let address;

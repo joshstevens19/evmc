@@ -23,6 +23,8 @@ export async function execute(packageVersion: string): Promise<void> {
   switch (args.command) {
     case CommandTypes.get:
       return await commands.get.action(args);
+    case CommandTypes.networks:
+      return await commands.networks.action(args);
     default:
       return Logger.error("unsupported command, try 'help'");
   }

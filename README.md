@@ -11,7 +11,7 @@ When browsing any evm blockchain, it is often useful to be able to see the sourc
 
 ## Chains Supported 🌐
 
-🌐 Ethereum Mainnet - eth_main
+🌐 Ethereum Mainnet - eth
 <br/>
 🌐 Ethereum Ropsten - eth_ropsten
 <br/>
@@ -65,18 +65,36 @@ $ yarn global add evm-contract-fetch
 
 ## CLI usage
 
-Once installed it will expose a command called evmc
+Once installed it will expose a command called `evmc` which can be executed anywhere.
 
 ### Get
 
-```bash
-$ evmc get <contract> --hardhat
-```
+please note when executing these commands it will create a folder with the name of the contract in the current directory you are in, unless you use `--output`
+
+### Just contracts
+
+To get just the contracts without any development tool:
 
 ```bash
-$ evmc get <contract> --foundry
+$ evmc get <network> <contractAddress>
 ```
 
+### Development toolset project setup
+
+#### hardhat
+
+To get the contract and setup a hardset development environment, with deploy scripts and compiling ready to go:
+
 ```bash
-$ evmc get <contract> --network=eth_main --output=PATH_DIRECTORY
+$ evmc get <network> <contractAddress> --hardhat
+```
+
+#### foundry
+
+incoming :)
+
+### To change the output path
+
+```bash
+$ evmc get <network> <contractAddress> --output=PATH_DIRECTORY
 ```
