@@ -107,6 +107,9 @@ $ evmc get <network> <contractAddress> --output=PATH_DIRECTORY
 The following features are coming soon:
 
 🚀 support foundry development kit
+<br/>
 🚀 allow you to interact with the contract without downloading them on your machine
+<br/>
 🚀 ability to config your main network and development kit (to avoid repeating yourself)
+<br/>
 🚀 ability to fetch multiple contracts at once with a yaml file
