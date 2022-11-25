@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "npx tslint -c tslint.json 'src/**/*.ts'",
+    "lint": "prettier --write ./src/**/*.ts",
     "start": "npm run build && node ./dist/index.js",
     "publish-cli": "tsc && npm publish --access public",
     "gp": "cd ./projects && node ../dist/bin/generator-cli.js 0xc13eac3b4f9eed480045113b7af00f7b5655ece8",
@@ -50,6 +50,7 @@
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0",
     "tslint": "^6.1.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "prettier": "^2.0.5"
   }
 }
