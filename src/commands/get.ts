@@ -17,10 +17,18 @@ export = {
 
     console.log('cmd', cmd);
 
+    let network = cmd.subcommands[0] as NetworkTypes;
+    if (!(<any>Object).values(NetworkTypes).includes(network)) {
+      return Logger.error(
+        'Invalid network please use one of the following: ' +
+          (<any>Object).values(NetworkTypes).join(', ')
+      );
+    }
+
     let address;
 
     try {
-      address = getAddress(cmd.subcommands[0]);
+      address = getAddress(cmd.subcommands[1]);
     } catch (error) {
       return Logger.error('Invalid contract address');
     }
@@ -34,7 +42,7 @@ export = {
 
     try {
       await generateContracts({
-        network: NetworkTypes.eth_main,
+        network,
         address,
         developmentKit,
       });

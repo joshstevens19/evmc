@@ -77,6 +77,10 @@ export const generateContracts = async (options: GenerateContractsOptions) => {
     options.address
   );
 
+  if (contractInfo.SourceCode.length === 0) {
+    throw new Error('Contract source code not verified');
+  }
+
   const contractWriter = new ContractWriter(contractInfo.ContractName);
 
   const isSingleContract = _isSingleContract(contractInfo);
