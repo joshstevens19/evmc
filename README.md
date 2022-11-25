@@ -54,13 +54,13 @@ When browsing any evm blockchain, it is often useful to be able to see the sourc
 ### npm:
 
 ```bash
-$ npm install evm-contract-fetch -g
+$ npm install evmcontracts -g
 ```
 
 ### yarn:
 
 ```bash
-$ yarn global add evm-contract-fetch
+$ yarn global add evmcontracts
 ```
 
 ## CLI usage
@@ -98,3 +98,12 @@ incoming :)
 ```bash
 $ evmc get <network> <contractAddress> --output=PATH_DIRECTORY
 ```
+
+### Incoming features
+
+The following features are coming soon:
+
+🚀 support foundry development kit
+🚀 allow you to interact with the contract without downloading them on your machine
+🚀 ability to config your main network and development kit (to avoid repeating yourself)
+🚀 ability to fetch multiple contracts at once with a yaml file
