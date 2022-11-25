@@ -68,6 +68,7 @@ const _getMultifileContract = async (
 export interface GenerateContractsOptions {
   network: NetworkTypes;
   address: string;
+  outputLocation?: string;
   developmentKit?: DevelopmentKitTypes;
 }
 
@@ -81,7 +82,10 @@ export const generateContracts = async (options: GenerateContractsOptions) => {
     throw new Error('Contract source code not verified');
   }
 
-  const contractWriter = new ContractWriter(contractInfo.ContractName);
+  const contractWriter = new ContractWriter(
+    contractInfo.ContractName,
+    options.outputLocation
+  );
 
   const isSingleContract = _isSingleContract(contractInfo);
 
