@@ -86,7 +86,7 @@ $ evmc get <network> <contractAddress>
 
 #### hardhat
 
-To get the contract and setup a hardset development environment, with deploy scripts and compiling ready to go:
+To get the contract and setup a hardhat development environment, with deploy scripts and compiling ready to go:
 
 ```bash
 $ evmc get <network> <contractAddress> --hardhat
