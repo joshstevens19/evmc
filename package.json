@@ -24,7 +24,7 @@
     "type": "git",
     "url": "git+https://github.com/joshstevens19/evmc.git"
   },
-  "author": "",
+  "author": "joshstevens19",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/joshstevens19/evmc/issues"
@@ -52,5 +52,12 @@
     "tslint": "^6.1.2",
     "typescript": "^3.8.3",
     "prettier": "^2.0.5"
-  }
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "package-lock.json",
+    "README.md",
+    "LICENSE"
+  ]
 }
