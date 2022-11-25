@@ -15,8 +15,6 @@ export = {
       return Logger.log(help);
     }
 
-    console.log('cmd', cmd);
-
     let network = cmd.subcommands[0] as NetworkTypes;
     if (!(<any>Object).values(NetworkTypes).includes(network)) {
       Logger.error('Invalid network please use one of the following:');
@@ -44,11 +42,14 @@ export = {
     }
 
     try {
+      Logger.log('Generating contract files...');
       await generateContracts({
         network,
         address,
+        outputLocation: cmd.options.output,
         developmentKit,
       });
+      Logger.log('Generated contract files enjoy :)');
     } catch (error) {
       Logger.error((<Error>error).message);
     }
