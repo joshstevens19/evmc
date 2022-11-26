@@ -1,6 +1,6 @@
 {
   "name": "evmcontracts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a simple cli tool to load a contract code up in your IDE instantly.",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "gp-hardhat4": "cd ./projects && node ../dist/bin/generator-cli.js get eth 0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d --hardhat",
     "gp-hardhat5": "cd ./projects && node ../dist/bin/generator-cli.js get eth 0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d --hardhat --output='../testme'",
     "networks": "cd ./projects && node ../dist/bin/generator-cli.js networks",
-    "help-get": "cd ./projects && node ../dist/bin/generator-cli.js get -h"
+    "help-get": "cd ./projects && node ../dist/bin/generator-cli.js dd"
   },
   "bin": {
     "evmc": "./dist/bin/generator-cli.js"

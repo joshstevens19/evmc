@@ -29,6 +29,7 @@ export async function execute(packageVersion: string): Promise<void> {
     case CommandTypes.networks:
       return await commands.networks.action(args);
     default:
-      return Logger.error("unsupported command, try 'help'");
+      Logger.error('Invalid command please use one of the following:');
+      return Logger.log(Helpers.buildUpHelpMessage(generateHelpMessages));
   }
 }
