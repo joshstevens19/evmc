@@ -1,5 +1,9 @@
 import { CommandTypes } from '../commands/command-types';
-import { generateHelpMessages, HelpMessage } from '../commands/help-messages';
+import {
+  generateHelpMessagesGet,
+  generateHelpMessagesNetworks,
+  HelpMessage,
+} from '../commands/help-messages';
 import { ProgramOptions } from './program-options';
 import yargs = require('yargs');
 
@@ -31,7 +35,9 @@ export default class Helpers {
   public static getHelpMessageByCommandType(commandType: CommandTypes): string {
     switch (commandType) {
       case CommandTypes.get:
-        return this.buildUpHelpMessage(generateHelpMessages);
+        return this.buildUpHelpMessage(generateHelpMessagesGet);
+      case CommandTypes.networks:
+        return this.buildUpHelpMessage(generateHelpMessagesNetworks);
       default:
         throw new Error('No help message for this command');
     }

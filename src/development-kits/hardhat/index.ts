@@ -31,29 +31,16 @@ const buildHardhatDeployScript = (
     inputs: { name: string; type: string }[];
   };
 
-  // console.log('constructorInput', constructorInput.inputs.length);
-
-  // console.log('constructParams', constructorArguments);
-
   const constructParams: string[] = constructorArguments.match(
     /.{1,64}/g
   ) as string[];
-
-  // console.log('constructParams', constructParams.length);
 
   const decodedParams = [];
   for (let i = constructorInput.inputs.length - 1; i >= 0; i--) {
     if (constructorInput.inputs[i]) {
       let result = '';
 
-      // console.log(constructorInput.inputs[i].type);
-
       if (constructorInput.inputs[i].type === 'string') {
-        // console.log(
-        //   'THIS IS OUTCOME!!!',
-        //   toUtf8String(toUtf8Bytes('0x' + constructParams[i]))
-        // );
-
         result = '0x' + constructParams[i];
       } else if (constructorInput.inputs[i].type === 'bytes') {
         result = parseBytes32String(constructParams[i]);

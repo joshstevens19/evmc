@@ -10,5 +10,5 @@ import { execute } from './execute';
 const packageJson = require('../../package.json');
 
 (async () => {
-  await execute(packageJson);
+  await execute(packageJson.version);
 })().catch((err) => console.error(err.message));

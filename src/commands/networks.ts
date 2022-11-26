@@ -4,15 +4,18 @@ import { ProgramOptions } from '../common/program-options';
 import { NetworkTypes } from '../networks/network-types';
 import { CommandTypes } from './command-types';
 
-const help = Helpers.getHelpMessageByCommandType(CommandTypes.get);
+const help = Helpers.getHelpMessageByCommandType(CommandTypes.networks);
 
 export = {
   async action(cmd: ProgramOptions): Promise<void> {
-    if (!cmd.command || cmd.command.length === 0) {
+    if (
+      !cmd.command ||
+      cmd.command.length === 0 ||
+      cmd.options.help ||
+      cmd.options.h
+    ) {
       return Logger.log(help);
     }
-
-    console.log('cmd', cmd);
 
     Logger.log('supported networks:');
     Logger.log('');

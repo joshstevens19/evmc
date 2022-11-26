@@ -11,7 +11,12 @@ const help = Helpers.getHelpMessageByCommandType(CommandTypes.get);
 
 export = {
   async action(cmd: ProgramOptions): Promise<void> {
-    if (!cmd.command || cmd.command.length === 0) {
+    if (
+      !cmd.command ||
+      cmd.command.length === 0 ||
+      cmd.options.help ||
+      cmd.options.h
+    ) {
       return Logger.log(help);
     }
 
