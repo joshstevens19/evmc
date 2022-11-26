@@ -1,6 +1,6 @@
 {
   "name": "evmcontracts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a simple cli tool to load a contract code up in your IDE instantly.",
   "main": "dist/index.js",
   "scripts": {
