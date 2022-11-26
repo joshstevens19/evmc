@@ -1,9 +1,10 @@
 [![npm version](https://badge.fury.io/js/evmcontracts.svg)](https://badge.fury.io/js/evmcontracts)
 ![downloads](https://img.shields.io/npm/dw/evmcontracts)
 
-# evm-contract-fetch (evmc)
+# evmc
 
-When browsing any evm blockchain, it is often useful to be able to see the source code of a contract. This is especially true when trying to understand the behavior of a contract, or when trying to verify the behavior of a contract. This tool allows you to fetch the source code of a contract from the blockchain, and create you the full project files for you to view in your editor, support to deploy on a local node, compile if you choose to. This uses etherscan API to grab the verified sources of the contract.
+When browsing any evm blockchain, it is often useful to be able to see the source code of a contract. This is especially true when trying to understand the behavior of a contract, or when trying to verify the behavior of a contract. You may be able to hack around and see it on etherscan but really you know your true home is your IDE (any IDE). This tool allows you to fetch the source code of a contract from the blockchain, and create you the full project files for you to view in YOUR IDE, support to deploy on a local node, compile if you choose to. This uses etherscan API to grab the verified sources of the contract.
+It will keep the same directory structure as how the contract was deployed, alongside all of the dependencies it uses, the project evmc fetches for you will be ready to go!
 
 ## Features 🚀
 
@@ -111,8 +112,9 @@ The following features are coming soon:
 🚀 ability to config your main network and development kit (to avoid repeating yourself)
 <br/>
 🚀 ability to fetch multiple contracts at once with a yaml file
+<br/>
 🚀 bring your own API key
 
 ### note
 
-I have generated API keys so its plug and play but these are rate limited at 5 requests per second, this should be plenty as long as the tool does not used by thousands of people, these are free API keys so nobody has motive of stealing them. Above we bring a way to bring your own API key in anyway so if this ever happens we can migrate and make it best practice.  
+I have generated API keys so its plug and play but these are rate limited at 5 requests per second, this should be plenty as long as the tool does not used by thousands of people, these are free API keys so nobody has motive of stealing them. Above we bring a way to bring your own API key in anyway so if this ever happens we can migrate and make it best practice.

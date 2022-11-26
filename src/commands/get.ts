@@ -54,7 +54,7 @@ export = {
         outputLocation: cmd.options.output,
         developmentKit,
       });
-      Logger.log('Generated contract files enjoy :)');
+      Logger.log('Generated contract files successfully');
     } catch (error) {
       Logger.error((<Error>error).message);
     }
