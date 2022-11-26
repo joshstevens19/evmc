@@ -111,3 +111,8 @@ The following features are coming soon:
 🚀 ability to config your main network and development kit (to avoid repeating yourself)
 <br/>
 🚀 ability to fetch multiple contracts at once with a yaml file
+🚀 bring your own API key
+
+### note
+
+I have generated API keys so its plug and play but these are rate limited at 5 requests per second, this should be plenty as long as the tool does not used by thousands of people, these are free API keys so nobody has motive of stealing them. Above we bring a way to bring your own API key in anyway so if this ever happens we can migrate and make it best practice.  
