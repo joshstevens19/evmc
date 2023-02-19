@@ -1,5 +1,4 @@
 [![npm version](https://badge.fury.io/js/evmcontracts.svg)](https://badge.fury.io/js/evmcontracts)
-![downloads](https://img.shields.io/npm/dw/evmcontracts)
 
 # evmc
 
